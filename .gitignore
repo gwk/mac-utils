@@ -1,0 +1,13 @@
+# Finder.
+.DS_Store
+
+# Python.
+__pycache__
+
+# Xcode.
+xcshareddata
+xcuserdata
+
+# Project.
+_build/
+_misc/
