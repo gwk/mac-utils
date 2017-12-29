@@ -4,7 +4,7 @@
 # $<: The name of the first prerequisite.
 # $^: The names of all the prerequisites, with spaces between them.
 
-.PHONY: _default all build clean cov test xcode
+.PHONY: _default all build build-rel clean install test
 
 _default: test
 
@@ -12,22 +12,21 @@ all: clean gen build test
 
 swift_build = swift build --build-path _build
 
-# src/Lex.swift
-build:
+build: _build
 	$(swift_build)
 	@echo done.
+
+build-rel:
+	$(swift_build) --configuration release
 
 clean:
 	rm -rf _build/*
 
-cov:
-	$(swift_build) -Xswiftc -profile-coverage-mapping -Xswiftc -profile-generate
+install: build-rel
+	cp _build/x86_64-apple-macosx10.10/release/del /usr/local/bin/
 
 test: build
 	iotest -fail-fast
-
-xcode:
-	swift package generate-xcodeproj
 
 _build:
 	mkdir -p $@
