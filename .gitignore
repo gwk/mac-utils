@@ -4,10 +4,12 @@
 # Python.
 __pycache__
 
+# Swift
+.build/
+
 # Xcode.
 xcshareddata
 xcuserdata
 
 # Project.
-_build/
 _misc/
