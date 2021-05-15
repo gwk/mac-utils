@@ -4,29 +4,25 @@
 # $<: The name of the first prerequisite.
 # $^: The names of all the prerequisites, with spaces between them.
 
-.PHONY: _default all build build-rel clean install test
+.PHONY: _default build build-rel clean install test
 
 _default: test
 
-all: clean gen build test
 
-swift_build = swift build --build-path _build
-
-build: _build
-	$(swift_build)
-	@echo done.
+build:
+	swift build
+	@echo build done.
 
 build-rel:
-	$(swift_build) --configuration release
+	swift build --configuration release
+	@echo build-rel done.
 
 clean:
 	rm -rf _build/*
 
 install: build-rel
-	cp _build/x86_64-apple-macosx10.10/release/del /usr/local/bin/
+	cp .build/release/{del,gen-thumbnails,zapple} /usr/local/bin/
+	cp notify.py /usr/local/bin/notify
 
 test: build
 	iotest -fail-fast
-
-_build:
-	mkdir -p $@

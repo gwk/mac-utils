@@ -38,23 +38,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       }
     }
 
-    let workspace = NSWorkspace.shared()
+    let workspace = NSWorkspace.shared
     var hasError = false
-    var doneCount = 0
 
     for path in paths {
       workspace.recycle([URL(fileURLWithPath: path)]) {
         (newURLs, error) in
-        doneCount += 1
         if let error = error {
           errL("del error: \(error.localizedDescription)")
           hasError = true
         }
-        if doneCount == paths.count {
-          exit(hasError ? 1 : 0)
-        }
       }
     }
+    exit(hasError ? 1 : 0)
   }
 }
 
@@ -65,7 +61,7 @@ func errL<Item>(_ item: Item) {
 }
 
 
-let app = NSApplication.shared()
+let app = NSApplication.shared
 let appDelegate = AppDelegate() // bound to global because app.delegate is unowned.
 app.delegate = appDelegate
 app.run()
