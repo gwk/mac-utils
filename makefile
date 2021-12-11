@@ -6,7 +6,7 @@
 
 .PHONY: _default build build-rel clean install test
 
-_default: test
+_default: help
 
 
 build:
@@ -18,11 +18,14 @@ build-rel:
 	@echo build-rel done.
 
 clean:
-	rm -rf _build/*
+	rm -rf .build/*
+
+help: # Summarize the targets of this makefile.
+	@GREP_COLOR="1;32" egrep --color=always '^\w[^ :]+:' makefile | sort
 
 install: build-rel
-	cp .build/release/{del,gen-thumbnails,zapple} /usr/local/bin/
-	cp notify.py /usr/local/bin/notify
+	sudo cp .build/release/{del,gen-thumbnails,zapple} /usr/local/bin/
+	sudo cp notify.py /usr/local/bin/notify
 
 test: build
 	iotest -fail-fast
