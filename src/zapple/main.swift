@@ -6,16 +6,20 @@ import Foundation
 
 
 let validOpts = Set<String>([
-  "-a",
-  "-c",
-  "-d",
-  "-o",
+  "-a", // Algorithm.
+  "-c", // Compress.
+  "-d", // Decompress.
+  "-o", // Output.
 ])
 
+let validFlags = Set<String>([
+  "-q", // Quiet.
+])
 
 func main() {
-  let (paths, opts) = parseArgs()
+  let (paths, opts, flags) = parseArgs()
 
+  let isLoud = !flags.contains("-q")
   var srcPath = ""
   var dstPath = ""
   var alg: CompressionAlgorithm = COMPRESSION_LZFSE
@@ -57,7 +61,7 @@ func main() {
   if !paths.isEmpty { fail("path list is not yet handled.") }
 
   var ok = true
-  ok &&= performFileOp(op: op, algorithm: alg, srcPath: srcPath, dstPath: dstPath)
+  ok &&= performFileOp(op: op, algorithm: alg, srcPath: srcPath, dstPath: dstPath, isLoud: isLoud)
   //for path in paths {
   //  ok &&= performFileOp(op: op, algorithm: alg, srcPath: path, dstPath: ???)
   //}
@@ -65,9 +69,10 @@ func main() {
 }
 
 
-func parseArgs() -> ([String], [String: String]) {
+func parseArgs() -> (paths: [String], opts:[String: String], flags: Set<String>) {
   var paths: [String] = []
   var opts: [String: String] = [:]
+  var flags: Set<String> = []
 
   var opt: String? = nil
   for (i, arg) in ProcessInfo.processInfo.arguments.enumerated() {
@@ -78,6 +83,8 @@ func parseArgs() -> ([String], [String: String]) {
       opt = nil
     } else if validOpts.contains(arg) {
       opt = arg
+    } else if validFlags.contains(arg) {
+      flags.insert(arg)
     } else if arg.hasPrefix("-") {
       fail("unrecognized option: '\(arg)'")
     } else {
@@ -87,7 +94,7 @@ func parseArgs() -> ([String], [String: String]) {
   if let opt = opt {
     fail("dangling option: \(opt)")
   }
-  return (paths, opts)
+  return (paths, opts, flags)
 }
 
 

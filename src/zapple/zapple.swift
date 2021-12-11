@@ -4,7 +4,7 @@ import Foundation
 import Compression
 
 
-func performFileOp(op: CompressionStreamOp, algorithm: CompressionAlgorithm, srcPath: String, dstPath: String) -> Bool {
+func performFileOp(op: CompressionStreamOp, algorithm: CompressionAlgorithm, srcPath: String, dstPath: String, isLoud: Bool) -> Bool {
 
   let fileManager = FileManager.default
 
@@ -46,9 +46,9 @@ func performFileOp(op: CompressionStreamOp, algorithm: CompressionAlgorithm, src
     algorithm: algorithm) {
     unitProgress in
     progress.completedUnitCount = unitProgress
-    errZ("\(opMsg) '\(srcPath)': \(numberFormatter.string(from: progress.fractionCompleted as NSNumber)!)…\r")
+    if isLoud { errZ("\(opMsg) '\(srcPath)': \(numberFormatter.string(from: progress.fractionCompleted as NSNumber)!)…\r") }
   }
-  errL("\(opMsg) '\(srcPath)': \(numberFormatter.string(from: progress.fractionCompleted as NSNumber)!).")
+  if isLoud { errL("\(opMsg) '\(srcPath)': \(numberFormatter.string(from: progress.fractionCompleted as NSNumber)!).") }
   return res
 }
 
