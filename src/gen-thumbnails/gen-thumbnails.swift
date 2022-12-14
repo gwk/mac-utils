@@ -29,9 +29,8 @@ func genThumbnail(origPath: String, maxSize: Int) -> Bool {
   if let srcProperties = CGImageSourceCopyPropertiesAtIndex(imgSrc, 0, nil) as NSDictionary? {
     for (k, v) in srcProperties {
       let k = k as! String
-      if k != "Orientation" { // Drop orientation because it will cause double-rotation.
-        properties[k as NSString] = v
-      }
+      if k == "Orientation" { continue } // Drop orientation because it will cause double-rotation.
+      properties[k as NSString] = v
     }
   }
 

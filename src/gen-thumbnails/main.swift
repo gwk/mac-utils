@@ -28,7 +28,7 @@ func main() {
 
   var ok = true
   for path in paths {
-    ok &&= genThumbnail(origPath: path, maxSize: maxSize)
+    ok &= genThumbnail(origPath: path, maxSize: maxSize)
   }
   exit(ok ? 0 : 1)
 }
@@ -66,8 +66,6 @@ func fail(_ msg: String) -> Never {
 }
 
 
-infix operator &&= : AssignmentPrecedence
-
-func &&=(_ lhs: inout Bool, rhs: Bool) { lhs = lhs && rhs }
+func &=(_ lhs: inout Bool, rhs: Bool) { lhs = lhs && rhs }
 
 main()
